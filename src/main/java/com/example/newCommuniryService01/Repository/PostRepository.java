@@ -4,11 +4,12 @@ import com.example.newCommuniryService01.Domain.PostDomain;
 import com.example.newCommuniryService01.Dto.CommentDto;
 import com.example.newCommuniryService01.Dto.PostDto;
 import com.example.newCommuniryService01.Dto.UserDto;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 import java.util.Map;
 
-public interface PostRepository {
+public interface PostRepository  {
 
 
     //게시글 추가 & 전체조회
@@ -16,7 +17,7 @@ public interface PostRepository {
     public Map<Long, PostDomain> findAll(String page, Long size);
 
     // 게시글 상세조회
-    public PostDomain findById(Long id);
+    public PostDomain memoryFindById(Long id); //findById는 Jpa에 이미 존재 -> 충돌
 
 
     //postId로 userId가져오기

@@ -46,7 +46,6 @@ public class PostAdminModePolicy implements PostPolicy{
 
 
 
-
     //추가: 포스트 도메인 adminOnly필드 값 추가 (-> 보완: adminOnly추가기준 정책로직 더하기 (일반유저가 '관리자용'으로 작성 가능하도록)
     @Override
     public PostDto createPost(PostDto postDto, Long sessionUserId) {
@@ -81,12 +80,12 @@ public class PostAdminModePolicy implements PostPolicy{
     public PostPageDto viewOnePost(Long postId, Long sessionUserId){
 
 
-        //보완: 열거형 필드 추가 후 수정하기 -> if(postRepository.findById(postId).getUserKind.equals("admin")
+        //보완: 열거형 필드 추가 후 수정하기 -> if(postRepository.memoryFindById(postId).getUserKind.equals("admin")
 
         //필터링 = '검증' -> '맞으면' 실행 (Not '찾으면') [=> True or False]
-        if(postRepository.findById(postId).getAdminOnly()){
+        if(postRepository.memoryFindById(postId).getAdminOnly()){
             //게시글 객체 겟
-            PostDomain postDomain = postRepository.findById(postId);
+            PostDomain postDomain = postRepository.memoryFindById(postId);
             //댓글 리스트화 (postId)
             List<CommentDto> commentDomainList = commentRepository.listingComment(postId);
 
@@ -114,14 +113,14 @@ public class PostAdminModePolicy implements PostPolicy{
 
         //필터링 = '검증' -> '아니면' 실행 (Not '찾으면') [=> True or False]
         //접근 권한 필터링
-        if(!postRepository.findById(postId).getAdminOnly()){
+        if(!postRepository.memoryFindById(postId).getAdminOnly()){
             return true; //adminOnly아닐 경우 true 반환 (접근 불가)
         }
 
         //메인 수정작업 (-> 도메인과 Dto객체 내부 메서드 - PUT에서 PATCH로 수정 필요)
         postDto.setId(postId);
-        postDto.setUserId(postRepository.findById(postId).getUserId());
-        postDto.setAuthor(postRepository.findById(postId).getAuthor());
+        postDto.setUserId(postRepository.memoryFindById(postId).getUserId());
+        postDto.setAuthor(postRepository.memoryFindById(postId).getAuthor());
         //
         postRepository.update(postDto.toDomain(), postId);
 
@@ -137,7 +136,7 @@ public class PostAdminModePolicy implements PostPolicy{
 
 
         //접근 권한 필터링
-        if(!postRepository.findById(postId).getAdminOnly()){
+        if(!postRepository.memoryFindById(postId).getAdminOnly()){
             return true;
         }
 

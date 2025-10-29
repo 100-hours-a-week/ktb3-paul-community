@@ -1,14 +1,22 @@
 package com.example.newCommuniryService01.Domain;
 
 import com.example.newCommuniryService01.Dto.UserDto;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 @Setter
 @Getter
+@Entity
+@SequenceGenerator(
+        name = "user_seq",
+        sequenceName = "user_seq",
+        allocationSize = 50             //-> DB에서 키 여러개 미리 가져와두고, 메모리에서 빠르게 할당
+)
 public class UserDomain {
 
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
     private Long id = 0L;
     
     private String userName;

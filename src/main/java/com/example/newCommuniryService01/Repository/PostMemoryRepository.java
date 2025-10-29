@@ -42,7 +42,7 @@ public class PostMemoryRepository implements PostRepository{
     }
 
     @Override
-    public PostDomain findById(Long postId) {
+    public PostDomain memoryFindById(Long postId) {
 
         return dbMap.get(postId);
 
