@@ -60,9 +60,12 @@ public class CommentMemoryRepository implements CommentRepository{
 
 
 
+
+
     //commentId로 userId 가져오기
     public Long getUserId(Long commentId){
 
+        //보완: 책임 분리 -> findById 메서드로 만들기 (서비스 책임)
         CommentDomain commentDomain = dbMap.get(commentId);
 
         return commentDomain.getUserId();

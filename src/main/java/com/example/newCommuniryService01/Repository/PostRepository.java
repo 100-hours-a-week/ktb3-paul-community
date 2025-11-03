@@ -6,8 +6,10 @@ import com.example.newCommuniryService01.Dto.PostDto;
 import com.example.newCommuniryService01.Dto.UserDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.net.InterfaceAddress;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public interface PostRepository  {
 
@@ -17,7 +19,8 @@ public interface PostRepository  {
     public Map<Long, PostDomain> findAll(String page, Long size);
 
     // 게시글 상세조회
-    public PostDomain memoryFindById(Long id); //findById는 Jpa에 이미 존재 -> 충돌
+    public PostDomain findById(Long id); //findById는 Jpa에 이미 존재 -> 충돌
+
 
 
     //postId로 userId가져오기
@@ -26,6 +29,12 @@ public interface PostRepository  {
     //게시글 수정, 삭제
     public PostDomain update(PostDomain postDomain, Long postId);
     public PostDomain delete(Long postId);
+
+
+
+
+
+
 
 
 

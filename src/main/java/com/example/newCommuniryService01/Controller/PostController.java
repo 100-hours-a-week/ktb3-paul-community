@@ -156,6 +156,11 @@ public class PostController {
 
 
 
+    @GetMapping("/test")
+    public void testCreatePost(){
+        postService.testCreatePost();
+    }
+
 
 
 

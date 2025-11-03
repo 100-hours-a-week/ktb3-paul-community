@@ -36,6 +36,7 @@ public class PostAdminModePolicy implements PostPolicy{
     //전략매칭 - 내 모드 찾기 메서드(세션유저 id확인) = "관리자모드로 전환"
     //보완: 열거형으로 변경하기
     public Boolean matchStrategy(Long sessionUserId){
+        //-> 전략마다 @AW 하지말고 서비스에서 파라미터로 주입받기 (Long sessionUserId, PostRepository postRepository, CommentRepository commentRepository, UserRepository userRepository)
 
         if(userRepository.findById(sessionUserId).getAdminYN()){
             return true;
@@ -56,6 +57,8 @@ public class PostAdminModePolicy implements PostPolicy{
         postDto.setAdminOnly(true);
 
 
+        //Dto - Domain 변환로직 변경 시(jpa), 전략구현체 코드 전부 변경해야함
+        // 개선how:
         PostDomain postDomain = postDto.toDomain();
         return (postRepository.save(postDomain)).toDto();
 
@@ -80,12 +83,12 @@ public class PostAdminModePolicy implements PostPolicy{
     public PostPageDto viewOnePost(Long postId, Long sessionUserId){
 
 
-        //보완: 열거형 필드 추가 후 수정하기 -> if(postRepository.memoryFindById(postId).getUserKind.equals("admin")
+        //보완: 열거형 필드 추가 후 수정하기 -> if(postRepository.findById(postId).getUserKind.equals("admin")
 
         //필터링 = '검증' -> '맞으면' 실행 (Not '찾으면') [=> True or False]
-        if(postRepository.memoryFindById(postId).getAdminOnly()){
+        if(postRepository.findById(postId).getAdminOnly()){
             //게시글 객체 겟
-            PostDomain postDomain = postRepository.memoryFindById(postId);
+            PostDomain postDomain = postRepository.findById(postId);
             //댓글 리스트화 (postId)
             List<CommentDto> commentDomainList = commentRepository.listingComment(postId);
 
@@ -113,16 +116,31 @@ public class PostAdminModePolicy implements PostPolicy{
 
         //필터링 = '검증' -> '아니면' 실행 (Not '찾으면') [=> True or False]
         //접근 권한 필터링
-        if(!postRepository.memoryFindById(postId).getAdminOnly()){
+        if(!postRepository.findById(postId).getAdminOnly()){
             return true; //adminOnly아닐 경우 true 반환 (접근 불가)
         }
 
         //메인 수정작업 (-> 도메인과 Dto객체 내부 메서드 - PUT에서 PATCH로 수정 필요)
         postDto.setId(postId);
-        postDto.setUserId(postRepository.memoryFindById(postId).getUserId());
-        postDto.setAuthor(postRepository.memoryFindById(postId).getAuthor());
+        postDto.setUserId(postRepository.findById(postId).getUserId());
+        postDto.setAuthor(postRepository.findById(postId).getAuthor());
         //
         postRepository.update(postDto.toDomain(), postId);
+
+
+
+        //Jpa과제 - developed 수정메서드
+        /*
+
+        1. 서비스레이어, dto가지고 필요로직 수행
+        2. dto - domain으로 변환
+        3. 리포에서 받은 domain을 파라미터로 조회한 엔티티 할당로직(domain 메서드) 실행
+
+         */
+
+
+
+
 
 
         return false;
@@ -136,7 +154,7 @@ public class PostAdminModePolicy implements PostPolicy{
 
 
         //접근 권한 필터링
-        if(!postRepository.memoryFindById(postId).getAdminOnly()){
+        if(!postRepository.findById(postId).getAdminOnly()){
             return true;
         }
 

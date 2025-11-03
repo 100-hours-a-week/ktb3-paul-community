@@ -8,6 +8,7 @@ import com.example.newCommuniryService01.Dto.PostListDto;
 import com.example.newCommuniryService01.Dto.PostPageDto;
 import com.example.newCommuniryService01.Repository.CommentRepository;
 import com.example.newCommuniryService01.Repository.PostRepository;
+import com.example.newCommuniryService01.Repository.TestRepository;
 import com.example.newCommuniryService01.Strategy.Policy.PostPolicy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,12 +26,19 @@ public class PostService {
     private List<PostPolicy> policyStrategies;
 
 
+    @Autowired
+    TestRepository testRepository;
+
+
+
     //점검: @AW -> List<PostPolicy>
     @Autowired
-    PostService(PostRepository postRepository, CommentRepository commentRepository, List<PostPolicy> policyStrategies){
+    public PostService(PostRepository postRepository, CommentRepository commentRepository, List<PostPolicy> policyStrategies){
+
+        this.policyStrategies = policyStrategies;
+
         this.postRepository = postRepository;
         this.commentRepository = commentRepository;
-        this.policyStrategies = policyStrategies;
     }
 
 
@@ -39,6 +47,7 @@ public class PostService {
     //코드체크: 널포인트 예외 체크 (매칭되는 전략 못찾으면 예외터짐)
     public PostPolicy getStrategy(Long sessionUserId){
 
+        //변수명 변경: policyStrategy -> postPolicy
         for(PostPolicy policyStrategy : policyStrategies) {
             if (policyStrategy.matchStrategy(sessionUserId)) {
                 return policyStrategy;
@@ -65,6 +74,7 @@ public class PostService {
 
          */
 
+
         return getStrategy(sessionUserId).createPost(postDto, sessionUserId);
 
     }
@@ -82,6 +92,9 @@ public class PostService {
             PostDto postDto = postDomain.toDto();
             postDtoList.add(postDto);
         }
+
+        System.out.println("전체조회: "+postDtoList);
+
         return new PostListDto(postDtoList);
     }
 
@@ -176,6 +189,23 @@ public class PostService {
 
 
     }
+
+
+
+
+
+
+
+
+
+    public void testCreatePost(){
+
+        testRepository.testCreatePost();
+
+    }
+
+
+
 
 
 

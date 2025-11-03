@@ -7,12 +7,9 @@ import com.example.newCommuniryService01.Dto.PostDto;
 import com.example.newCommuniryService01.Dto.UserDto;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-@Repository
+//@Repository
 public class PostMemoryRepository implements PostRepository{
 
 
@@ -42,7 +39,7 @@ public class PostMemoryRepository implements PostRepository{
     }
 
     @Override
-    public PostDomain memoryFindById(Long postId) {
+    public PostDomain findById(Long postId) {
 
         return dbMap.get(postId);
 
@@ -72,6 +69,15 @@ public class PostMemoryRepository implements PostRepository{
         dbMap.remove(postId);
         return null;
     }
+
+
+
+
+
+
+
+
+
 
 
 }

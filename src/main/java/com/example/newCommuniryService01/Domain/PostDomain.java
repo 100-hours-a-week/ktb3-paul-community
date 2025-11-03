@@ -15,8 +15,8 @@ import javax.swing.text.StyledEditorKit;
 @Entity
 @SequenceGenerator(
         name = "post_seq",
-        sequenceName = "post_seq",
-        allocationSize = 50             //-> allocationSize: DB에서 여러개의 키를 미리 가져와두고, 메모리에서 빠르게 할당
+        sequenceName = "post_seq"
+        //allocationSize = 50             //-> allocationSize: DB에서 여러개의 키를 미리 가져와두고, 메모리에서 빠르게 할당
 )
 public class PostDomain {
 
@@ -26,9 +26,9 @@ public class PostDomain {
     private Long id = 0L;
 
     private Long userId = 0L;
-    //@Column(length = 200)
     private String author = "";
 
+    //@Column(length = 200)
     private String title = "";
     private String content = "";
 
@@ -83,6 +83,26 @@ public class PostDomain {
         );
         return postDto;
     }
+
+
+    public PostDomain updateDomain(PostDomain postDomain){
+
+
+
+        return null;
+    }
+
+
+
+    //수정용 도메인메서드 -> 일단 PUT으로 구현.. 후 PATCH화
+    public void refresh(PostDomain postDomain){
+        this.userId = postDomain.userId;
+        this.author = postDomain.author;
+        this.title = postDomain.title;
+        this.content = postDomain.content;
+        this.adminOnly = postDomain.adminOnly;
+    }
+
 
 
 }

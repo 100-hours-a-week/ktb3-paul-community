@@ -73,9 +73,9 @@ public class PostLoginModePolicy implements PostPolicy{
 
 
         //보완: 반환값 false도 가능하게 Object로 설정 후 필터링 조건문 일관화
-        if(!postRepository.memoryFindById(postId).getAdminOnly()){
+        if(!postRepository.findById(postId).getAdminOnly()){
             //게시글 객체 겟
-            PostDomain postDomain = postRepository.memoryFindById(postId);
+            PostDomain postDomain = postRepository.findById(postId);
             //댓글 리스트화 (postId)
             List<CommentDto> commentDomainList = commentRepository.listingComment(postId);
 
@@ -101,14 +101,14 @@ public class PostLoginModePolicy implements PostPolicy{
     public Boolean updatePost(PostDto postDto, Long postId, Long sessionUserId){
 
         //접근 권한 필터링
-        if(postRepository.memoryFindById(postId).getAdminOnly()){
+        if(postRepository.findById(postId).getAdminOnly()){
             return true; //adminOnly일 경우 true 반환 (접근 불가)
         }
 
         //메인 수정작업 (-> 도메인과 Dto객체 내부 메서드 - PUT에서 PATCH로 수정 필요)
         postDto.setId(postId);
-        postDto.setUserId(postRepository.memoryFindById(postId).getUserId());
-        postDto.setAuthor(postRepository.memoryFindById(postId).getAuthor());
+        postDto.setUserId(postRepository.findById(postId).getUserId());
+        postDto.setAuthor(postRepository.findById(postId).getAuthor());
         //
         postRepository.update(postDto.toDomain(), postId);
 
@@ -122,7 +122,7 @@ public class PostLoginModePolicy implements PostPolicy{
     public Boolean deletePost(Long postId, Long sessionUserId) {
 
         //접근 권한 필터링
-        if(postRepository.memoryFindById(postId).getAdminOnly()){
+        if(postRepository.findById(postId).getAdminOnly()){
             return true;
         }
 
