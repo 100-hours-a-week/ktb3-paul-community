@@ -10,8 +10,8 @@ import lombok.Setter;
 @Entity
 @SequenceGenerator(
         name = "comment_seq",
-        sequenceName = "comment_seq",
-        allocationSize = 50             //-> allocationSize: DB에서 여러개의 키를 미리 가져와두고, 메모리에서 빠르게 할당
+        sequenceName = "comment_seq"
+        //allocationSize = 50             //-> allocationSize: DB에서 여러개의 키를 미리 가져와두고, 메모리에서 빠르게 할당
 )
 public class CommentDomain {
 
@@ -24,6 +24,18 @@ public class CommentDomain {
     String author;
 
     String content;
+
+
+
+
+
+
+    //default 생성자 필요 (Jpa, 하이버네이트)
+    protected CommentDomain(){}
+
+
+
+
 
     public CommentDomain(
             Long id,

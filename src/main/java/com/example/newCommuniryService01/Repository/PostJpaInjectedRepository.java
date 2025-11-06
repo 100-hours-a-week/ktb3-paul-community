@@ -1,10 +1,12 @@
 package com.example.newCommuniryService01.Repository;
 
 import com.example.newCommuniryService01.Domain.PostDomain;
+import com.example.newCommuniryService01.Domain.PostUpdateDomain;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -32,41 +34,46 @@ public class PostJpaInjectedRepository implements PostRepository{
     }
 
     @Override
-    public Map<Long, PostDomain> findAll(String page, Long size) {
-        postJpaRepository.findAll();
+    public List<PostDomain> findAll(String page, Long size) {
 
-        //리스트 -> 맵으로 변환
+        return postJpaRepository.findAll();
 
-
-        return Map.of();
     }
 
 
     @Override
     public PostDomain findById(Long id) {
+
         Optional<PostDomain> found = postJpaRepository.findById(id);
         return found.orElse(null);
     }
+
 
     @Override
     public Long getUserId(Long postId) {
         return postJpaRepository.findById(postId).get().getUserId();
     }
 
+
     @Override
-    public PostDomain update(PostDomain postDomain, Long postId) {
+    public PostDomain update(PostUpdateDomain pud, Long postId) {
 
 
-        PostDomain found = postJpaRepository.findById(postId).get();
+        PostDomain foundEntity = postJpaRepository.findById(postId).get();
 
-        found.updateDomain(postDomain);
+        foundEntity.updateEntity(pud);
 
-        return found;
+        return foundEntity;
     }
+
+
 
     @Override
     public PostDomain delete(Long postId) {
-        return null;
+
+        PostDomain foundEntity = postJpaRepository.findById(postId).get();
+        postJpaRepository.delete(foundEntity);
+        return foundEntity;
     }
 
 

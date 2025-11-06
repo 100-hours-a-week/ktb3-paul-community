@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Repository
+//@Repository
 public class CommentMemoryRepository implements CommentRepository{
 
 
@@ -22,17 +22,19 @@ public class CommentMemoryRepository implements CommentRepository{
 
 
 
-    // 상세조회 - 댓글 리스트 반환 (메서드 명 getCommentList로 변경하기)
-        //-> findAll 메서드로 변경하기
+    /* 상세조회 - 댓글 리스트 반환
+        -> 후 보완: 책임분리 & 객체 불변성 문제 (+findAll 메서드로 변경하기)
+     */
+
     public List<CommentDto> listingComment(Long postId){
 
         List<CommentDto> commentDtoList = new ArrayList<>();
 
+        /*회고: 도메인 객체 조회 시의 필터링 로직을 리포지토리 계층에서 침범해도 되는가 (코드 중복 줄이기 위해서)
+            => 해결: 리포 역할상 '데이터 전체' 전달만 하고 [리스트화, 필터링 로직]은 서비스에서 한꺼번에 수행
+         */
         for(CommentDomain commentDomain : dbMap.values()){
             if(commentDomain.getPostId().equals(postId)){
-                /*회고: 도메인 객체 조회 시의 필터링 로직을 리포지토리 계층에서 침범해도 되는가 (코드 중복 줄이기 위해서)
-                    => 해결: 리포 역할상 '데이터 전체' 전달만 하고 [리스트화, 필터링 로직]은 서비스에서 한꺼번에 수행
-                 */
 
                 CommentDto commentDto = commentDomain.toDto();
                 commentDtoList.add(commentDto);
@@ -43,11 +45,20 @@ public class CommentMemoryRepository implements CommentRepository{
     }
 
 
+    @Override
+    public List<CommentDomain> findAll(Long postId) {
+        return null;
+    }
+
+
+
+
+
 
 
 
     @Override
-    public CommentDto save(CommentDomain commentDomain, Long postId) {
+    public CommentDomain save(CommentDomain commentDomain, Long postId) {
 
         commentDomain.setId(++sequence);
         commentDomain.setPostId(postId);
@@ -83,7 +94,7 @@ public class CommentMemoryRepository implements CommentRepository{
 
 
     @Override
-    public CommentDto update(CommentDomain commentDomain, Long commentId) {
+    public CommentDomain update(CommentDomain commentDomain, Long commentId) {
 
         dbMap.put(commentId, commentDomain);
 
@@ -93,7 +104,7 @@ public class CommentMemoryRepository implements CommentRepository{
 
 
     @Override
-    public CommentDto delete(Long commentId) {
+    public CommentDomain delete(Long commentId) {
         dbMap.remove(commentId);
         return null;
     }
@@ -108,13 +119,6 @@ public class CommentMemoryRepository implements CommentRepository{
 
 
 
-
-    //폐기처분
-    @Override
-    public Map<Long, CommentDomain> viewPosts(String page, Long size) {
-
-        return this.dbMap;
-    }
 
 
 }

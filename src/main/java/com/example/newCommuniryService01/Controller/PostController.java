@@ -24,6 +24,7 @@ public class PostController {
 
     //클라 세션 - userId 겟
     //보완: 'getSessionUserId' 메서드 중복 해결 -> 인증 담당 auth라인에서 처리하기
+    /*
     private Long getSessionUserId(HttpServletRequest request) {
 
         HttpSession session = request.getSession(false);
@@ -35,6 +36,8 @@ public class PostController {
         return (Long) session.getAttribute("userId");
     }
 
+     */
+
 
 
     //게시글 - 추가
@@ -42,7 +45,7 @@ public class PostController {
     public ResponseDto createPost(@RequestBody PostDto postDto, HttpServletRequest request){
 
 
-        Long sessionUserId = getSessionUserId(request);
+        Long sessionUserId = AuthController.getSessionUserId(request);
 
         //로그인 여부 필터링
         //보완: ㄴ> create 정책 = 서비스에서 담당해야.
@@ -76,7 +79,7 @@ public class PostController {
 
 
         //System.out.println(postDtoList);
-        return responseDto; //회고: dto클래스 private필드인데 getter없어서 json자동변환 과정에서 바인딩 오류 뜸
+        return responseDto; //코드실수: dto클래스 private필드인데 getter없어서 json자동변환 과정에서 바인딩 오류 뜸
 
 
     }
@@ -92,7 +95,7 @@ public class PostController {
             HttpServletRequest request
     ){
 
-        Long sessionUserId = getSessionUserId(request);
+        Long sessionUserId = AuthController.getSessionUserId(request);
 
         PostPageDto postPageDto = postService.viewOnePost(postId, sessionUserId);
 
@@ -123,7 +126,7 @@ public class PostController {
             @PathVariable Long postId,
             HttpServletRequest request){
 
-        Long sessionUserId = getSessionUserId(request);
+        Long sessionUserId = AuthController.getSessionUserId(request);
 
         //접근 권한 필터링
         if(postService.updatePost(postDto, postId, sessionUserId)){
@@ -141,7 +144,7 @@ public class PostController {
     public ResponseDto deletePost(@PathVariable Long postId, HttpServletRequest request){
 
 
-        Long sessionUserId = getSessionUserId(request);
+        Long sessionUserId = AuthController.getSessionUserId(request);
 
         //접근 권한 필터링
         if(postService.deletePost(postId, sessionUserId)){

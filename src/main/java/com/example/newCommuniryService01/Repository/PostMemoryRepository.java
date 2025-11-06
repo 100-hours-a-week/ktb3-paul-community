@@ -1,6 +1,7 @@
 package com.example.newCommuniryService01.Repository;
 
 import com.example.newCommuniryService01.Domain.PostDomain;
+import com.example.newCommuniryService01.Domain.PostUpdateDomain;
 import com.example.newCommuniryService01.Domain.UserDomain;
 import com.example.newCommuniryService01.Dto.CommentDto;
 import com.example.newCommuniryService01.Dto.PostDto;
@@ -33,9 +34,10 @@ public class PostMemoryRepository implements PostRepository{
 
 
     @Override
-    public Map<Long, PostDomain> findAll(String page, Long size) {
+    public List<PostDomain> findAll(String page, Long size) {
 
-        return this.dbMap;
+        //return this.dbMap;
+        return null;
     }
 
     @Override
@@ -55,9 +57,10 @@ public class PostMemoryRepository implements PostRepository{
 
 
     @Override
-    public PostDomain update(PostDomain postDomain, Long postId) {
+    public PostDomain update(PostUpdateDomain postUpdateDomain, Long postId) {
 
-        dbMap.put(postId, postDomain);
+
+        //dbMap.put(postId, postDomain);
 
         return null;
     }

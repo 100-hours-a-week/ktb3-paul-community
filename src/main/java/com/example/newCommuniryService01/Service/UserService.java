@@ -40,6 +40,22 @@ public class UserService {
     }
 
 
+    //임시
+    public UserDto signUpJpa(UserDto userDto){
+
+        /*
+        UserDomain userDomain = new UserDomain(
+                userDto.getUserName(),
+                userDto.getEmail(),
+        )
+
+         */
+        return null;
+    }
+
+
+
+
 
 
 

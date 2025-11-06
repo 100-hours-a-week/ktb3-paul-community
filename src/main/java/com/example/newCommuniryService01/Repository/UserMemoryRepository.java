@@ -8,9 +8,10 @@ import com.example.newCommuniryService01.Dto.UserDto;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-@Repository
+//@Repository
 public class UserMemoryRepository implements UserRepository{
 
 
@@ -29,6 +30,11 @@ public class UserMemoryRepository implements UserRepository{
         System.out.println("리포지토리, 저장됨: " + userDomain);
 
         return userDomain;
+    }
+
+    @Override
+    public List<UserDomain> findAll() {
+        return List.of();
     }
 
 
@@ -60,8 +66,15 @@ public class UserMemoryRepository implements UserRepository{
 
 
 
+    @Override
+    public UserDomain update(UserDomain userDomain, Long userId) {
+        return null;
+    }
 
-
+    @Override
+    public UserDomain delete(Long userId) {
+        return null;
+    }
 
 
 }

@@ -16,5 +16,14 @@ public class PostPageDto extends DataDto {
 
     //Boolean liked = false;
 
+
+    public PostPageDto(
+            PostDto postDto,
+            List<CommentDto> commentDtoList
+    ){
+        this.postDto = postDto;
+        this.commentDtoList = commentDtoList;
+    }
+
 }
 

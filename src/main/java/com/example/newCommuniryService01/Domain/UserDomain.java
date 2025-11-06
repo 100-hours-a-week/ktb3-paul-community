@@ -24,14 +24,28 @@ public class UserDomain {
     private String passWord;
 
     private Boolean adminYN = false;
+    private UserMode userMode = null;
 
 
-    public UserDomain(String userName, String email, String passWord, Boolean adminYN){
+    public UserDomain(
+            String userName,
+            String email,
+            String passWord,
+            Boolean adminYN,
+            UserMode userMode
+    ){
         this.userName = userName;
         this.email = email;
         this.passWord = passWord;
         this.adminYN = adminYN;
+        this.userMode = userMode;
     }
+
+
+
+
+    //default 생성자 필요 (Jpa, 하이버네이트)
+    protected UserDomain(){}
 
 
 
@@ -44,7 +58,8 @@ public class UserDomain {
                 this.userName,
                 this.email,
                 null,
-                this.adminYN
+                this.adminYN,
+                userMode
         );
     }
 

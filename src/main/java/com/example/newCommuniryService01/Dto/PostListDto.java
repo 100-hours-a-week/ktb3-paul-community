@@ -9,10 +9,10 @@ import java.util.List;
 @Setter
 public class PostListDto extends DataDto{
 
-    List<PostDto> postList;
+    List<PostFetchDto> pfdList;
 
-    public PostListDto(List<PostDto> postList){
-        this.postList = postList;
+    public PostListDto(List<PostFetchDto> postList){
+        this.pfdList = pfdList;
     }
 
 }

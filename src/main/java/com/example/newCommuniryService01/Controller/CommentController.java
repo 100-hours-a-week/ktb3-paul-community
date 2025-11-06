@@ -22,21 +22,6 @@ public class CommentController {
 
 
 
-    //클라 세션 - userId 겟
-    private Long getSessionUserId(HttpServletRequest request) {
-
-        HttpSession session = request.getSession(false);
-
-        if (session == null){
-            return null;
-        }
-
-        return (Long) session.getAttribute("userId");
-    }
-
-
-
-
 
 
     //댓글 - 추가
@@ -47,7 +32,7 @@ public class CommentController {
             HttpServletRequest request){
 
 
-        Long sessionUserId = getSessionUserId(request);
+        Long sessionUserId = AuthController.getSessionUserId(request);
 
 
         //로그인 여부 필터링
@@ -73,7 +58,7 @@ public class CommentController {
             HttpServletRequest request
     ){
 
-        Long sessionUserId = getSessionUserId(request);
+        Long sessionUserId = AuthController.getSessionUserId(request);
 
         //접근 권한 필터링
         if(commentService.updateComment(commentDto, postId, commentId, sessionUserId)){
@@ -94,7 +79,7 @@ public class CommentController {
     ){
 
 
-        Long sessionUserId = getSessionUserId(request);
+        Long sessionUserId = AuthController.getSessionUserId(request);
 
         //접근 권한 필터링
         if(commentService.deleteComment(postId, commentId, sessionUserId)){

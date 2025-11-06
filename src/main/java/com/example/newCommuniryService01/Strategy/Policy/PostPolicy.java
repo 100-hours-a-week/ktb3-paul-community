@@ -1,5 +1,7 @@
 package com.example.newCommuniryService01.Strategy.Policy;
 
+import com.example.newCommuniryService01.Domain.PostAuthority;
+import com.example.newCommuniryService01.Domain.UserMode;
 import com.example.newCommuniryService01.Dto.PostDto;
 import com.example.newCommuniryService01.Dto.PostListDto;
 import com.example.newCommuniryService01.Dto.PostPageDto;
@@ -9,16 +11,37 @@ import org.springframework.stereotype.Component;
 public interface PostPolicy {
 
 
+
+    //전략 매칭
     public Boolean matchStrategy(Long sessionUserId);
 
 
+    //게시글 권한데이터 겟
+    public PostAuthority fetchPostAuthorityData(PostDto postDto, Long sessionUserId);
+    //true검증
+    public Boolean verifyAuthority(Long postId, Long sessionUserId);
+    //false검증
+    public Boolean checkUnauthorized(Long postId, Long sessionUserId, PostDto postDto);
+    public Boolean checkUnauthorized(Long postId, Long sessionUserId);
 
-    //추가
-    public PostDto createPost(PostDto postDto, Long sessionUserId);
+
+
+
+
+
+
+
+
+
+
+
+
+        //추가
+    public PostAuthority createPost(PostDto postDto, Long sessionUserId);
 
     //전체 조회, 상세 조회
     public PostListDto viewPosts(String page, Long size);
-    public PostPageDto viewOnePost(Long postId, Long sessionUserId);
+    public Boolean viewOnePost(Long postId, Long sessionUserId);
 
     //수정, 삭제
     public Boolean updatePost(PostDto postDto, Long postId, Long sessionUserId);
