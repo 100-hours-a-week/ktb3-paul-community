@@ -11,7 +11,7 @@ public class PostListDto extends DataDto{
 
     List<PostFetchDto> pfdList;
 
-    public PostListDto(List<PostFetchDto> postList){
+    public PostListDto(List<PostFetchDto> pfdList){
         this.pfdList = pfdList;
     }
 

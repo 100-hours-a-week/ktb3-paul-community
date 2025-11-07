@@ -2,6 +2,7 @@ package com.example.newCommuniryService01.Service;
 
 
 import com.example.newCommuniryService01.Domain.CommentDomain;
+import com.example.newCommuniryService01.Domain.CommentUpdateDomain;
 import com.example.newCommuniryService01.Dto.CommentDto;
 import com.example.newCommuniryService01.Dto.UserDto;
 import com.example.newCommuniryService01.Repository.CommentRepository;
@@ -27,7 +28,15 @@ public class CommentService {
         //세션 매치해서 가져온 userId 할당
         commentDto.setUserId(sessionUserId);
 
-        commentRepository.save(commentDto.toDomain(), postId);
+        CommentDomain commentDomain = new CommentDomain(
+                commentDto.getId(),
+                postId,
+                sessionUserId,
+                commentDto.getAuthor(),
+                commentDto.getContent()
+        );
+
+        commentRepository.save(commentDomain, postId);
         return null;
     }
 
@@ -37,14 +46,7 @@ public class CommentService {
     //댓글 - 수정
     public Boolean updateComment(CommentDto commentDto, Long postId, Long commentId, Long sessionUserId){
 
-
-
-        //접근 권한 필터링
-        if(!sessionUserId.equals(commentRepository.getUserId(commentId))){
-            return true;
-        }
-
-        //코드 회고: Patch메서드인데 필드 값 전체를 변경하는 Put으로 구현함 -> 수정 마다 postId 재할당 해야됨 (수정 필요)
+        /* 구 버전
         commentDto.setPostId(postId);
         //
         commentDto.setId(commentId);
@@ -52,6 +54,29 @@ public class CommentService {
         commentDto.setAuthor(commentRepository.findById(postId).getAuthor());
         //---
         commentRepository.update(commentDto.toDomain(), commentId);
+         */
+
+        CommentDomain commentDomain = commentRepository.findById(commentId);
+
+        //접근 권한 필터링 (본인만)
+        if(!sessionUserId.equals(commentDomain.getUserId())){
+            return true;
+        }
+
+
+        System.out.println("Content: "+commentDto.getContent());
+        CommentUpdateDomain commentUpdateDomain = new CommentUpdateDomain(
+                commentDto.getId(),
+                commentDto.getPostId(),
+                commentDto.getUserId(),
+                commentDto.getAuthor(),
+                commentDto.getContent()
+        );
+
+        commentRepository.update(commentUpdateDomain, commentId);
+
+
+
 
         return false;
     }
@@ -62,8 +87,10 @@ public class CommentService {
     public Boolean deleteComment(Long postId, Long commentId, Long sessionUserId){
 
 
+        CommentDomain commentDomain = commentRepository.findById(commentId);
+
         //접근 권한 필터링
-        if(!sessionUserId.equals(commentRepository.getUserId(commentId))){
+        if(!sessionUserId.equals(commentDomain.getUserId())){
             return true;
         }
 

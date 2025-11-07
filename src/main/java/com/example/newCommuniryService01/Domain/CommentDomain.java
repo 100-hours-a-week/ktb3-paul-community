@@ -53,6 +53,39 @@ public class CommentDomain {
 
     }
 
+
+
+
+
+
+    public CommentUpdateDomain updateEntity(CommentUpdateDomain cud){
+
+        Long cudId = cud.getId();
+        Long cudPostId = cud.getPostId();
+        Long cudUserId = cud.getUserId();
+        String cudAuthor = cud.getAuthor();
+        String cudContent = cud.getContent();
+
+
+        if(cudId!= null) this.id = cudId;
+        if(cudUserId != null) this.userId = cudUserId;
+        if(cudPostId != null) this.postId = cudPostId;
+        if(cudAuthor != null) this.author = cudAuthor;
+        if(cudContent != null) this.content = cudContent;
+
+
+
+        return null;
+    }
+
+
+
+
+
+
+
+
+
     public CommentDto toDto(){
         CommentDto commentDto
                 = new CommentDto(
