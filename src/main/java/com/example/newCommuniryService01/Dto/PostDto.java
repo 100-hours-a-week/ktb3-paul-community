@@ -1,6 +1,8 @@
 package com.example.newCommuniryService01.Dto;
 
+import com.example.newCommuniryService01.Domain.PostAuthority;
 import com.example.newCommuniryService01.Domain.PostDomain;
+import com.example.newCommuniryService01.Domain.UserMode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,6 +24,9 @@ public class PostDto {
     // (-> 일단 지금은 adminOnly으로만 분기, 열거형 필드로 수정 후 나중에 '로그인,모두,나에게' 등 추가하기)
     private Boolean adminOnly = false;
 
+    private PostAuthority postAuthority = null;
+
+
 
     public PostDto(
             Long id,
@@ -29,7 +34,8 @@ public class PostDto {
             String author,
             String title,
             String content,
-            Boolean adminOnly
+            Boolean adminOnly,
+            PostAuthority postAuthority
 
     ){
 
@@ -39,8 +45,12 @@ public class PostDto {
         this.title = title;
         this.content = content;
         this.adminOnly = adminOnly;
+        this.postAuthority = postAuthority;
 
     }
+
+
+
 
 
 
@@ -54,7 +64,9 @@ public class PostDto {
                 author,
                 title,
                 content,
-                adminOnly
+                adminOnly,
+                postAuthority
+
         );
         return postDomain;
     }

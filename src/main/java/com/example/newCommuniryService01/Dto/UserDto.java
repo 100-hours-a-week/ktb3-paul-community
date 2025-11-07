@@ -2,6 +2,7 @@ package com.example.newCommuniryService01.Dto;
 
 
 import com.example.newCommuniryService01.Domain.UserDomain;
+import com.example.newCommuniryService01.Domain.UserMode;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.validation.BindException;
@@ -16,17 +17,36 @@ public class UserDto {
     private String email;
     private String passWord;
 
-    private Boolean adminYN;
+    private Boolean adminYN = false;
+    private UserMode userMode = null;
 
 
 
-    public UserDto(String userName, String email, String passWord, Boolean adminYN){
+    public UserDto(
+            String userName,
+            String email,
+            String passWord,
+            Boolean adminYN,
+            UserMode userMode){
         this.userName = userName;
         this.email = email;
         this.passWord = passWord;
 
         this.adminYN = adminYN;
+        this.userMode= userMode;
     }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -38,7 +58,8 @@ public class UserDto {
                 this.email,
                 this.passWord,
 
-                this.adminYN
+                this.adminYN,
+                this.userMode
         );
     }
 

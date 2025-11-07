@@ -20,14 +20,12 @@ public class AuthService {
     public Long signIn(UserDto userDto){
 
 
-
-
-
         UserDomain userDomainGotten = userRepository.findByEmail(userDto.getEmail());
 
         //이메일 못찾음
         if(userDomainGotten == null){
             //"이메일이 존재하지 않습니다"
+            System.out.println("userDomainGotten = null");
         }
 
         //이메일 찾음 - 비밀번호 확인

@@ -10,28 +10,24 @@ import java.util.Map;
 
 public interface CommentRepository {
 
-    //게시글 전체조회
-    public Map<Long, CommentDomain> viewPosts(String page, Long size);
 
 
-    //게시글 상세조회
-    public List<CommentDto> listingComment(Long postId);
+    public CommentDomain save(CommentDomain commentDomain, Long postId);
 
-    //댓글 추가
-    public CommentDto save(CommentDomain commentDomain, Long postId);
-
-    public Long getUserId(Long postId);
+    public List<CommentDomain> findAll(Long postId);
 
     public CommentDomain findById(Long id);
 
+    public CommentDomain update(CommentDomain commentDomain, Long commentId);
 
-    //댓글 수정
-    public CommentDto update(CommentDomain commentDomain, Long commentId);
-    //댓글 삭제
-    public CommentDto delete(Long commentId);
+    public CommentDomain delete(Long commentId);
 
 
 
+
+
+    public List<CommentDto> listingComment(Long postId);
+    public Long getUserId(Long postId);
 
 
     /*

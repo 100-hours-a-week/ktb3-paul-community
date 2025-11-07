@@ -1,13 +1,14 @@
 package com.example.newCommuniryService01.Service;
 
 
+import com.example.newCommuniryService01.Domain.CommentDomain;
 import com.example.newCommuniryService01.Domain.PostDomain;
-import com.example.newCommuniryService01.Dto.CommentDto;
-import com.example.newCommuniryService01.Dto.PostDto;
-import com.example.newCommuniryService01.Dto.PostListDto;
-import com.example.newCommuniryService01.Dto.PostPageDto;
+import com.example.newCommuniryService01.Domain.PostUpdateDomain;
+import com.example.newCommuniryService01.Dto.*;
 import com.example.newCommuniryService01.Repository.CommentRepository;
+import com.example.newCommuniryService01.Repository.PostJpaInjectedRepository;
 import com.example.newCommuniryService01.Repository.PostRepository;
+import com.example.newCommuniryService01.Repository.TestRepository;
 import com.example.newCommuniryService01.Strategy.Policy.PostPolicy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,13 +26,23 @@ public class PostService {
     private List<PostPolicy> policyStrategies;
 
 
+    @Autowired
+    TestRepository testRepository;
+
+
+
     //점검: @AW -> List<PostPolicy>
     @Autowired
-    PostService(PostRepository postRepository, CommentRepository commentRepository, List<PostPolicy> policyStrategies){
+    public PostService(PostRepository postRepository, CommentRepository commentRepository, List<PostPolicy> policyStrategies){
+
+        this.policyStrategies = policyStrategies;
+
         this.postRepository = postRepository;
         this.commentRepository = commentRepository;
-        this.policyStrategies = policyStrategies;
     }
+
+
+
 
 
 
@@ -39,6 +50,7 @@ public class PostService {
     //코드체크: 널포인트 예외 체크 (매칭되는 전략 못찾으면 예외터짐)
     public PostPolicy getStrategy(Long sessionUserId){
 
+        //변수명 변경: policyStrategy -> postPolicy
         for(PostPolicy policyStrategy : policyStrategies) {
             if (policyStrategy.matchStrategy(sessionUserId)) {
                 return policyStrategy;
@@ -47,6 +59,15 @@ public class PostService {
 
         return null;
     }
+
+
+
+
+
+
+
+
+
 
 
 
@@ -65,7 +86,20 @@ public class PostService {
 
          */
 
-        return getStrategy(sessionUserId).createPost(postDto, sessionUserId);
+        PostDomain postDomain = new PostDomain(
+                postDto.getId(),
+                postDto.getUserId(),
+                postDto.getAuthor(),
+                postDto.getTitle(),
+                postDto.getContent(),
+                null,
+                getStrategy(sessionUserId).fetchPostAuthorityData(postDto, sessionUserId) //전략구현체가 서비스에 포함되는 형태로 개선
+                //ㄴ> 변경하기: 유저 종류에 따른 자동할당 => 유저가 직접 선택하도록
+        );
+
+        postRepository.save(postDomain);
+
+        return null;
 
     }
 
@@ -75,14 +109,44 @@ public class PostService {
     //게시글 - 전체조회
     public PostListDto viewPosts(String page, Long size){
 
+        /* Jpa 이전 버전
+
         Map<Long, PostDomain> postDbMap = postRepository.findAll(page, size);
         List<PostDto> postDtoList = new ArrayList<>();
 
+        // 맵-리스트 변환
         for (PostDomain postDomain : postDbMap.values()) {
             PostDto postDto = postDomain.toDto();
             postDtoList.add(postDto);
         }
+
+        System.out.println("전체조회: "+postDtoList);
+
         return new PostListDto(postDtoList);
+
+         */
+
+        List<PostDomain> postDomainList = postRepository.findAll(page, size);
+        List<PostFetchDto> pfdList = new ArrayList<>();
+
+        //domain - dto변환 -> fetch 정책 적용 (선택적 할당)
+        for(PostDomain postDomain : postDomainList){
+            PostFetchDto newPfd = new PostFetchDto(
+                    postDomain.getId(),
+                    postDomain.getUserId(),
+                    postDomain.getAuthor(),
+                    postDomain.getTitle(),
+                    null,
+                    postDomain.getAdminOnly(),
+                    null
+            );
+            pfdList.add(newPfd);
+        }
+
+
+        System.out.println("전체조회: "+pfdList);
+
+        return new PostListDto(pfdList);
     }
 
 
@@ -109,13 +173,54 @@ public class PostService {
 
         return postPageDto;
 
+        return getStrategy(sessionUserId).viewOnePost(postId, sessionUserId);
+
          */
 
         //보완 여지: 권한과 관련된 요소들(전략 매칭, 권한 필터링)은 auth라인에서 처리하고 post라인에서 가져다 쓰도록 수정?
-        return getStrategy(sessionUserId).viewOnePost(postId, sessionUserId);
+
+        if(getStrategy(sessionUserId).verifyAuthority(postId, sessionUserId)){
+
+            //단일 게시글 - dto변환/할당
+            PostDomain postDomain = postRepository.findById(postId);
+
+            PostDto postDto = new PostDto(
+                    postDomain.getId(),
+                    postDomain.getUserId(),
+                    postDomain.getAuthor(),
+                    postDomain.getTitle(),
+                    postDomain.getContent(),
+                    postDomain.getAdminOnly(),
+                    postDomain.getPostAuthority()
+            );
+
+
+            //댓글리스트 - dto변환
+            List<CommentDomain> commentDomainList = commentRepository.findAll(postId);
+            List<CommentDto> commentDtoList = new ArrayList<>();
+
+            for(CommentDomain commentDomain : commentDomainList){
+                CommentDto commentDto = new CommentDto(
+                        commentDomain.getId(),
+                        commentDomain.getPostId(),
+                        commentDomain.getUserId(),
+                        commentDomain.getAuthor(),
+                        commentDomain.getContent()
+                );
+                commentDtoList.add(commentDto);
+            }
+
+
+            //총 담기
+            PostPageDto postPageDto = new PostPageDto(postDto, commentDtoList);
+
+            return postPageDto;
+
+        }
+
+        return null;
 
     }
-
 
 
 
@@ -141,7 +246,28 @@ public class PostService {
 
          */
 
-        return getStrategy(sessionUserId).updatePost(postDto, postId, sessionUserId);
+
+        //Jpa 적용 + '진정한 DIP' 보완 버전
+        if(getStrategy(sessionUserId).checkUnauthorized(postId, sessionUserId, postDto)){
+            return true;
+        }
+
+        PostUpdateDomain pud = new PostUpdateDomain(
+                postDto.getId(),
+                postDto.getUserId(),
+                postDto.getAuthor(),
+                postDto.getTitle(),
+                postDto.getContent(),
+                null, // 서비스계층에서의 비즈니스로직 적용 예시 (dto/domain변환 - 선택적 필드 할당)
+                null
+        );
+
+        postRepository.update(pud, postId);
+
+
+
+        return false;
+
 
         //PATCH화
         /*
@@ -159,7 +285,7 @@ public class PostService {
     //게시글 - 삭제
     public Boolean deletePost(Long postId, Long sessionUserId){
 
-        /* 전략패턴 적용전 버전
+        /* 전략패턴 적용 전 버전
         //접근 권한 필터링
         if(!sessionUserId.equals(postRepository.getUserId(postId))){
             return true;
@@ -172,10 +298,31 @@ public class PostService {
 
          */
 
-        return getStrategy(sessionUserId).deletePost(postId, sessionUserId);
+        if(getStrategy(sessionUserId).checkUnauthorized(postId, sessionUserId)){
+            return true;
+        }
 
+        postRepository.delete(postId);
+        return false;
 
     }
+
+
+
+
+
+
+
+
+
+    public void testCreatePost(){
+
+        testRepository.testCreatePost();
+
+    }
+
+
+
 
 
 
