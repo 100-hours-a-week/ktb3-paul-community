@@ -1,8 +1,10 @@
 package com.example.newCommuniryService01.Repository;
 
 import com.example.newCommuniryService01.Domain.CommentDomain;
+import com.example.newCommuniryService01.Domain.CommentUpdateDomain;
 import com.example.newCommuniryService01.Domain.UserDomain;
 import com.example.newCommuniryService01.Dto.CommentDto;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -10,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 @Repository
+@Transactional
 public class CommentJpaInjectedRepository implements CommentRepository{
 
 
@@ -42,11 +45,12 @@ public class CommentJpaInjectedRepository implements CommentRepository{
         return commentJpaRepository.findById(id).get();
     }
 
+
     @Override
-    public CommentDomain update(CommentDomain commentDomain, Long commentId) {
+    public CommentDomain update(CommentUpdateDomain cud, Long commentId) {
         CommentDomain foundEntity = commentJpaRepository.findById(commentId).get();
 
-        //foundEntity.updateEntity(uud);
+        foundEntity.updateEntity(cud);
 
         return foundEntity;
     }

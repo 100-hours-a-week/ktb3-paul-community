@@ -88,7 +88,7 @@ public class PostService {
 
         PostDomain postDomain = new PostDomain(
                 postDto.getId(),
-                postDto.getUserId(),
+                sessionUserId,
                 postDto.getAuthor(),
                 postDto.getTitle(),
                 postDto.getContent(),

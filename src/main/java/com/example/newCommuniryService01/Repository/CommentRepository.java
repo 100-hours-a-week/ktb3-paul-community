@@ -1,6 +1,7 @@
 package com.example.newCommuniryService01.Repository;
 
 import com.example.newCommuniryService01.Domain.CommentDomain;
+import com.example.newCommuniryService01.Domain.CommentUpdateDomain;
 import com.example.newCommuniryService01.Domain.PostDomain;
 import com.example.newCommuniryService01.Dto.CommentDto;
 import com.example.newCommuniryService01.Dto.PostDto;
@@ -18,7 +19,7 @@ public interface CommentRepository {
 
     public CommentDomain findById(Long id);
 
-    public CommentDomain update(CommentDomain commentDomain, Long commentId);
+    public CommentDomain update(CommentUpdateDomain cud, Long commentId);
 
     public CommentDomain delete(Long commentId);
 

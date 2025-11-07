@@ -1,6 +1,7 @@
 package com.example.newCommuniryService01.Repository;
 
 import com.example.newCommuniryService01.Domain.CommentDomain;
+import com.example.newCommuniryService01.Domain.CommentUpdateDomain;
 import com.example.newCommuniryService01.Domain.PostDomain;
 import com.example.newCommuniryService01.Dto.CommentDto;
 import com.example.newCommuniryService01.Dto.PostDto;
@@ -91,8 +92,12 @@ public class CommentMemoryRepository implements CommentRepository{
 
     }
 
+    @Override
+    public CommentDomain update(CommentUpdateDomain cud, Long commentId) {
+        return null;
+    }
 
-
+    /*
     @Override
     public CommentDomain update(CommentDomain commentDomain, Long commentId) {
 
@@ -100,6 +105,8 @@ public class CommentMemoryRepository implements CommentRepository{
 
         return null;
     }
+
+     */
 
 
 
