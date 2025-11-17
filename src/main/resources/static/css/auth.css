@@ -1,0 +1,72 @@
+/* 로그인 관련 전용 스타일 (auth.css) */
+
+/* 화면 중앙 배치 */
+.auth-container {
+    width: 100%;
+    height: calc(100vh - 80px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 페이지 타이틀: 로그인 */
+.auth-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+/* 입력폼 영역 – 테두리 없음(요구사항 반영) */
+.auth-form {
+    width: 330px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.input-group label {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 6px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #aaa;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.helper-text {
+    font-size: 12px;
+    color: #d67c7c;
+    margin-top: 4px;
+}
+
+/* 버튼 */
+.auth-main-btn {
+    width: 330px;
+    margin-top: 20px;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    border: none;
+    background: #b89adb;
+    color: white;
+    cursor: pointer;
+}
+
+.auth-sub-btn {
+    margin-top: 16px;
+    border: 1px solid #888;
+    padding: 7px 16px;
+    font-size: 14px;
+    background: white;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+

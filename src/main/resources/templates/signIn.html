@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인</title>
+
+    <!-- CSS 연결 -->
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/auth.css">
+</head>
+<body>
+
+<header class="main-header">
+    아무 말 대잔치
+</header>
+
+<div class="auth-container">
+
+    <div class="auth-title">로그인</div>
+
+    <div class="auth-form">
+        <div class="input-group">
+            <label>이메일</label>
+            <input id="emailInput" type="email" placeholder="이메일을 입력하세요">
+        </div>
+
+        <div class="input-group">
+            <label>비밀번호</label>
+            <input id="passwordInput" type="password" placeholder="비밀번호를 입력하세요">
+            <div class="helper-text">* helper text</div>
+        </div>
+    </div>
+
+    <!-- 로그인 버튼 -->
+    <button id="loginBtn" class="auth-main-btn">로그인</button>
+
+    <!-- 회원가입 버튼 -->
+    <button id="moveToJoinBtn" class="auth-sub-btn">회원가입</button>
+
+</div>
+
+<!-- JS 연결 -->
+<script src="/js/common.js"></script>
+<script src="/js/auth_signIn.js"></script>
+
+</body>
+</html>
