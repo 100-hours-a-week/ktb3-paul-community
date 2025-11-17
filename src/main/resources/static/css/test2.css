@@ -1,0 +1,97 @@
+    body {
+        margin: 0;
+        padding: 0;
+        background: #f1f1f3;
+        font-family: Arial, sans-serif;
+    }
+
+    /* 상단 타이틀 */
+    header {
+        width: 100%;
+        padding: 20px 0;
+        text-align: center;
+        font-size: 26px;
+        font-weight: bold;
+        background: #efeff1;
+        border-bottom: 2px solid #bbb;
+    }
+
+    /* 전체 화면 정렬 */
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: calc(100vh - 80px);
+    }
+
+    /* 로그인 카드 */
+    .login-box {
+        width: 350px;
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        text-align: left;
+    }
+
+    .login-title {
+        text-align: center;
+        font-size: 22px;
+        font-weight: bold;
+        margin-bottom: 25px;
+    }
+
+    .input-group {
+        margin-bottom: 18px;
+    }
+
+    .input-group label {
+        display: block;
+        font-size: 14px;
+        font-weight: bold;
+        margin-bottom: 6px;
+    }
+
+    .input-group input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #aaa;
+        border-radius: 6px;
+        font-size: 14px;
+        outline: none;
+    }
+
+    .helper-text {
+        color: #d87373;
+        font-size: 12px;
+        margin-top: 5px;
+    }
+
+    .login-btn {
+        width: 100%;
+        padding: 12px;
+        background: #b89adb;
+        color: white;
+        border: none;
+        font-size: 16px;
+        font-weight: bold;
+        border-radius: 8px;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+
+    .join-btn {
+        display: block;
+        margin: 20px auto 0;
+        padding: 7px 16px;
+        border-radius: 6px;
+        border: 1px solid #888;
+        background: white;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    .join-btn:hover {
+        background: #f5f5f5;
+    }
+

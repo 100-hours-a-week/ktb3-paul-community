@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>HTML 핵심 요소 종합 예제</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+
+
+
+
+<body>
+<script src="/js/script.js"></script>
+<header>
+    <h1>HTML 기본 화면 요소 종합 예제</h1>
+</header>
+
+<main>
+    <!-- 텍스트 관련 요소 -->
+    <section>
+        <h2>1. 텍스트 요소</h2>
+        <h3>제목 태그 (h1~h6)</h3>
+        <h1>h1 제목</h1>
+        <h2>h2 제목</h2>
+        <h3>h3 제목</h3>
+        <h4>h4 제목</h4>
+        <p>이것은 일반적인 <strong>문단(paragraph)</strong>입니다.
+            <em>기울임</em>이나 <span class="highlight">강조 배경</span>도 가능합니다.</p>
+        <p>줄바꿈 예시<br>이렇게 <code>&lt;br&gt;</code> 태그로 줄을 바꿀 수 있습니다.</p>
+        <hr>
+        <p>위의 선은 <code>&lt;hr&gt;</code> 태그로 만든 구분선입니다.</p>
+    </section>
+
+    <!-- 링크와 이미지 -->
+    <section>
+        <h2>2. 링크와 이미지</h2>
+        <p>링크 예시:
+            <a href="https://example.com" target="_blank">Example 사이트로 이동</a>
+        </p>
+        <p>이미지 예시:</p>
+        <img src="https://via.placeholder.com/200x120.png?text=Sample+Image" alt="샘플 이미지">
+    </section>
+
+    <!-- 목록 -->
+    <section>
+        <h2>3. 목록 (List)</h2>
+        <p>순서 없는 목록 (<code>&lt;ul&gt;</code>):</p>
+        <ul>
+            <li>사과</li>
+            <li>바나나</li>
+            <li>포도</li>
+        </ul>
+
+        <p>순서 있는 목록 (<code>&lt;ol&gt;</code>):</p>
+        <ol>
+            <li>HTML 배우기</li>
+            <li>CSS 배우기</li>
+            <li>JavaScript 배우기</li>
+        </ol>
+    </section>
+
+    <!-- 표 -->
+    <section>
+        <h2>4. 표 (Table)</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>번호</th>
+                <th>이름</th>
+                <th>나이</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>1</td>
+                <td>홍길동</td>
+                <td>25</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>이순신</td>
+                <td>32</td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <!-- 입력 및 폼 -->
+    <section>
+        <h2>5. 입력 요소 (Form)</h2>
+        <form action="#" method="post">
+            <label for="username">이름:</label><br>
+            <input id="username" type="text" placeholder="이름 입력"><br><br>
+
+            <label for="email">이메일:</label><br>
+            <input id="email" type="email" placeholder="example@mail.com"><br><br>
+
+            <label for="message">메시지:</label><br>
+            <textarea id="message" rows="4" cols="40" placeholder="내용을 입력하세요"></textarea><br><br>
+
+            <label for="color">좋아하는 색상 선택:</label>
+            <select id="color">
+                <option>빨강</option>
+                <option>파랑</option>
+                <option>초록</option>
+            </select><br><br>
+
+            <input type="checkbox" id="agree">
+            <label for="agree">개인정보 수집에 동의합니다</label><br><br>
+
+            <button type="submit" class="btn">제출</button>
+            <button type="reset" class="btn">초기화</button>
+        </form>
+    </section>
+
+    <!-- 레이아웃 박스 -->
+    <section>
+        <h2>6. 레이아웃 구분 박스</h2>
+        <div style="background:#f8f9fa; padding:10px; border:1px dashed #aaa;">
+            <p>이곳은 <code>&lt;div&gt;</code>로 감싼 일반 구역입니다.</p>
+        </div>
+
+        <article style="background:#e8f4ff; padding:10px; margin-top:10px;">
+            <h3>Article 예시</h3>
+            <p>뉴스나 블로그의 본문 콘텐츠에 주로 사용됩니다.</p>
+        </article>
+
+        <section style="background:#fff4e6; padding:10px; margin-top:10px;">
+            <h3>Section 예시</h3>
+            <p>페이지 내의 논리적 구역을 나누는 데 쓰입니다.</p>
+        </section>
+    </section>
+</main>
+
+<footer>
+    <p>&copy; 2025 HTML 연습 예제 — 모든 기본 요소 포함</p>
+</footer>
+
+<button id="btn_clickMe">Click Me</button>
+
+</body>
+
+
+
+
+
+</html>

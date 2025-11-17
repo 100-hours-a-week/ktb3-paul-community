@@ -1,0 +1,74 @@
+
+    /*******************************************
+     * 공통 스타일 (common.css)
+     *******************************************/
+
+    /* 기본 폰트 & 초기화 */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+    }
+
+    body {
+        background: #f1f1f3;
+        color: #222;
+    }
+
+    /*******************************************
+     * 공통 레이아웃
+     *******************************************/
+
+    .main-header {
+        width: 100%;
+        padding: 20px 0;
+        text-align: center;
+        font-size: 26px;
+        font-weight: bold;
+        background: #efeff1;
+        border-bottom: 2px solid #bbb;
+        position: relative; /* 뒤로가기 버튼 위치를 위해 필요 */
+    }
+
+    /* 화면 중앙 배치 컨테이너 (auth, post 등에서 재사용) */
+    .center-container {
+        width: 100%;
+        min-height: calc(100vh - 80px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    /*******************************************
+     * 공통 요소 스타일
+     *******************************************/
+
+    /* 공통 버튼 */
+    .btn {
+        cursor: pointer;
+        border-radius: 6px;
+        border: none;
+    }
+
+    /* 기본 input 스타일 */
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #aaa;
+        border-radius: 6px;
+        font-size: 14px;
+        outline: none;
+        background: white;
+    }
+
+    /*******************************************
+     * helper 텍스트 공통
+     *******************************************/
+    .helper-text {
+        font-size: 12px;
+        color: #d67c7c;
+        margin-top: 4px;
+    }
