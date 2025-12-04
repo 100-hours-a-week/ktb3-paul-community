@@ -5,6 +5,7 @@ import com.example.newCommuniryService01.Service.PostService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.xml.crypto.Data;
@@ -15,10 +16,12 @@ public class PostController {
 
 
     private PostService postService;
+    private AuthController authController;
 
     @Autowired
-    PostController(PostService postService){
+    PostController(PostService postService, AuthController authController){
         this.postService = postService;
+        this.authController = authController;
     }
 
 
@@ -42,11 +45,23 @@ public class PostController {
 
     //게시글 - 추가
     @PostMapping("/posts")
-    public ResponseDto createPost(@RequestBody PostDto postDto, HttpServletRequest request){
+    public ResponseDto createPost(@RequestBody PostDto postDto,
+                                  HttpServletRequest request,
+                                  Authentication authentication){
 
 
         Long sessionUserId = AuthController.getSessionUserId(request);
 
+        //세션인증제외 테스트
+        //sessionUserId = 14353L;
+
+        postService.createPost(postDto, sessionUserId, authentication);
+
+        return new ResponseDto("post_success");
+
+
+
+        /*
         //로그인 여부 필터링
         //보완: ㄴ> create 정책 = 서비스에서 담당해야.
         if(sessionUserId == null){
@@ -58,6 +73,8 @@ public class PostController {
             return new ResponseDto("post_success");
         }
 
+         */
+
     }
 
 
@@ -68,8 +85,18 @@ public class PostController {
     public ResponseDto viewPosts(
             //@RequestParam(required = false, defaultValue = "defaultTitle") String title,
             @RequestParam(required = true, defaultValue = "1") String page,
-            @RequestParam(required = true, defaultValue = "5") Long size
+            @RequestParam(required = true, defaultValue = "5") Long size,
+            HttpServletRequest request,
+            Authentication authentication
     ){
+
+        System.out.println("posts responding. . .");
+
+        //System.out.println(">> Principal  : " + authentication.getPrincipal());
+        //System.out.println(">> Username   : " + authentication.getName());
+        //System.out.println(">> Authorities: " + authentication.getAuthorities());
+        //System.out.println(">> Credentials: " + authentication.getCredentials()); // 보통 null
+
 
         PostListDto postListDto = postService.viewPosts(page, size);
 
@@ -79,6 +106,7 @@ public class PostController {
 
 
         //System.out.println(postDtoList);
+        System.out.println("전체조회 응답, 세션유저Id: "+AuthController.getSessionUserId(request));
         return responseDto; //코드실수: dto클래스 private필드인데 getter없어서 json자동변환 과정에서 바인딩 오류 뜸
 
 
@@ -92,12 +120,15 @@ public class PostController {
     @GetMapping("posts/{postId}")
     public ResponseDto viewOnePost(
             @PathVariable Long postId,
-            HttpServletRequest request
+            HttpServletRequest request,
+            Authentication authentication
     ){
 
         Long sessionUserId = AuthController.getSessionUserId(request);
+        //세션인증제외 테스트
+        sessionUserId = 14353L;
 
-        PostPageDto postPageDto = postService.viewOnePost(postId, sessionUserId);
+        PostPageDto postPageDto = postService.viewOnePost(postId, sessionUserId, authentication);
 
         //권한 필터링
         if(postPageDto == null){
@@ -124,12 +155,20 @@ public class PostController {
     public ResponseDto updatePost(
             @RequestBody PostDto postDto,
             @PathVariable Long postId,
-            HttpServletRequest request){
+            HttpServletRequest request,
+            Authentication authentication){
 
         Long sessionUserId = AuthController.getSessionUserId(request);
 
+        //세션인증제외 테스트
+        sessionUserId = 14353L;
+
+
+        System.out.println("수정, 세션인증객체.name: "+authentication.getName());
+
+
         //접근 권한 필터링
-        if(postService.updatePost(postDto, postId, sessionUserId)){
+        if(postService.updatePost(postDto, postId, sessionUserId, authentication)){
             return new ResponseDto("접근 권한이 없습니다."); // -> 상태코드로 처리 필요
         }
 
@@ -146,6 +185,9 @@ public class PostController {
 
         Long sessionUserId = AuthController.getSessionUserId(request);
 
+        //세션인증제외 테스트
+        sessionUserId = 14353L;
+
         //접근 권한 필터링
         if(postService.deletePost(postId, sessionUserId)){
             return new ResponseDto("접근 권한이 없습니다."); // -> 상태코드로 처리 필요
@@ -157,12 +199,6 @@ public class PostController {
     }
 
 
-
-
-    @GetMapping("/test")
-    public void testCreatePost(){
-        postService.testCreatePost();
-    }
 
 
 

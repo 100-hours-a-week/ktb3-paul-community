@@ -1,18 +1,18 @@
-package com.example.newCommuniryService01.Repository;
+package com.example.newCommuniryService01.Repository.Jpa;
 
 import com.example.newCommuniryService01.Domain.PostDomain;
 import com.example.newCommuniryService01.Domain.PostUpdateDomain;
+import com.example.newCommuniryService01.Repository.PostRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Repository
 @Transactional
-public class PostJpaInjectedRepository implements PostRepository{
+public class PostJpaInjectedRepository implements PostRepository {
 
 
     private PostJpaRepository postJpaRepository;

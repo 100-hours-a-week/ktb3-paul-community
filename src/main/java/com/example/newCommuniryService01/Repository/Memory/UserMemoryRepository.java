@@ -1,18 +1,15 @@
-package com.example.newCommuniryService01.Repository;
+package com.example.newCommuniryService01.Repository.Memory;
 
 
 import com.example.newCommuniryService01.Domain.UserDomain;
-import com.example.newCommuniryService01.Dto.CommentDto;
-import com.example.newCommuniryService01.Dto.PostDto;
-import com.example.newCommuniryService01.Dto.UserDto;
-import org.springframework.stereotype.Repository;
+import com.example.newCommuniryService01.Repository.UserRepository;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 //@Repository
-public class UserMemoryRepository implements UserRepository{
+public class UserMemoryRepository implements UserRepository {
 
 
     //빈객체로 한개만 생성되는데 static을 쓰는 이유는?

@@ -6,33 +6,34 @@ import com.example.newCommuniryService01.Dto.UserDto;
 import com.example.newCommuniryService01.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
 
     private UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    UserService(UserRepository userRepository){
+    UserService(UserRepository userRepository, PasswordEncoder passwordEncoder){
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     //유저 - 회원가입
-    //-> 유저 종류별 분기 필요
     public UserDto signUp(UserDto userDto){
 
-        //1) Dto -> Domain 변환
+        // Dto -> Domain 변환
         UserDomain userDomain = userDto.toDomain();
 
-        //2) Domain로직(정책) 메서드 실행
+        String encoded = passwordEncoder.encode(userDomain.getPassWord());
+        userDomain.setPassWord(encoded);
 
+        UserDomain Saved = userRepository.save(userDomain);
 
-        //3) Domain객체 전달
-        UserDomain userDomainSaved = userRepository.save(userDomain);
-
-        //4) Domain -> Dto변환
-        UserDto userDtoReturn = userDomainSaved.toDto();
+        // Domain -> Dto변환
+        UserDto userDtoReturn = Saved.toDto();
 
         return userDtoReturn;
 
