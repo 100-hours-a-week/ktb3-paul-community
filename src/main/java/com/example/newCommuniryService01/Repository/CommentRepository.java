@@ -5,6 +5,7 @@ import com.example.newCommuniryService01.Domain.CommentUpdateDomain;
 import com.example.newCommuniryService01.Domain.PostDomain;
 import com.example.newCommuniryService01.Dto.CommentDto;
 import com.example.newCommuniryService01.Dto.PostDto;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;

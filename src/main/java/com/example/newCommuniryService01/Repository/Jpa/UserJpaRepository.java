@@ -1,6 +1,5 @@
-package com.example.newCommuniryService01.Repository;
+package com.example.newCommuniryService01.Repository.Jpa;
 
-import com.example.newCommuniryService01.Domain.PostDomain;
 import com.example.newCommuniryService01.Domain.UserDomain;
 import org.springframework.data.jpa.repository.JpaRepository;
 

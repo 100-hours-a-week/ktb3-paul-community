@@ -62,7 +62,7 @@ public class PostDomain {
             String author,
             String title,
             String content,
-            Boolean adminOnly,
+            Boolean adminOnly, //삭제
             PostAuthority postAuthority
     ){
 

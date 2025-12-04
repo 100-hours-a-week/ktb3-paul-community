@@ -33,6 +33,8 @@ public class CommentController {
 
 
         Long sessionUserId = AuthController.getSessionUserId(request);
+        //세션인증제외 테스트
+        sessionUserId = 14353L;
 
 
         //로그인 여부 필터링
@@ -59,6 +61,8 @@ public class CommentController {
     ){
 
         Long sessionUserId = AuthController.getSessionUserId(request);
+        //세션인증제외 테스트
+        sessionUserId = 14353L;
 
         //접근 권한 필터링
         if(commentService.updateComment(commentDto, postId, commentId, sessionUserId)){
@@ -80,6 +84,8 @@ public class CommentController {
 
 
         Long sessionUserId = AuthController.getSessionUserId(request);
+        //세션인증제외 테스트
+        sessionUserId = 14353L;
 
         //접근 권한 필터링
         if(commentService.deleteComment(postId, commentId, sessionUserId)){

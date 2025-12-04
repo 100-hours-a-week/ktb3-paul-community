@@ -1,15 +1,17 @@
 package com.example.newCommuniryService01.Controller;
 
 import com.example.newCommuniryService01.Dto.ResponseDto;
+import com.example.newCommuniryService01.Dto.SignInDto;
 import com.example.newCommuniryService01.Dto.UserDto;
 import com.example.newCommuniryService01.Service.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class AuthController {
@@ -23,6 +25,85 @@ public class AuthController {
         this.authService = authService;
     }
 
+
+    @GetMapping("/auth")
+    public ResponseDto getSignInPage(){
+
+        System.out.println("로그인화면 반환");
+
+        return new ResponseDto("로그인 화면 반환");
+    }
+
+
+    @PatchMapping("/auth")
+    public ResponseDto test_patchAuth(){
+
+        System.out.println("/auth - patch: 수정 실패");
+
+        return new ResponseDto("auth - patch: 수정 실패");
+    }
+
+
+    @GetMapping("/default")
+    public ResponseDto defaultPage(){
+
+        System.out.println("기본 페이지 반환");
+
+        return new ResponseDto("기본 페이지 반환");
+    }
+
+
+
+    @GetMapping("/auth/check")
+    public ResponseDto authCheck(Authentication authentication){
+
+        System.out.println("authChecking. . .");
+
+        //System.out.println(">> Principal  : " + authentication.getPrincipal());
+        System.out.println(">> Username   : " + authentication.getName());
+        System.out.println(">> Authorities: " + authentication.getAuthorities());
+        System.out.println(">> Credentials: " + authentication.getCredentials()); // 보통 null
+
+
+        return new ResponseDto("auth checking");
+    }
+
+
+
+
+
+    //API 방식 인증흐름 구현
+    /*
+    @Autowired
+    AuthenticationManager authenticationManager;
+
+
+    @PostMapping("/auth-security")
+    public ResponseDto login(@RequestBody SignInDto dto) {
+
+
+
+        Authentication auth = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(dto.getEmail(), dto.getPassWord())
+        );
+
+        SecurityContextHolder.getContext().setAuthentication(auth);
+
+        return new ResponseDto("login_success");
+    }
+
+     */
+
+
+
+
+
+
+
+
+
+
+
     //인증 - 로그인
     @PostMapping("/auth")
     public ResponseDto signIn(@RequestBody UserDto userDto, HttpServletRequest request){
@@ -35,6 +116,8 @@ public class AuthController {
          */
 
 
+        
+        System.out.println("userDto: "+userDto.getEmail()+userDto.getPassWord());
 
         //로그인 검증 - userId 겟
         Long userIdGotten = authService.signIn(userDto);
@@ -53,12 +136,17 @@ public class AuthController {
             HttpSession session = request.getSession(true);
             session.setAttribute("userId", userIdGotten);
 
+            System.out.println("로그인 성공, 세션유저Id: "+AuthController.getSessionUserId(request));
             return new ResponseDto("로그인 성공");
 
             //request.changeSessionId();
 
         }
     }
+
+
+
+
 
 
     //인증 - 로그아웃

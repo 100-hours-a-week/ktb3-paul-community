@@ -6,16 +6,17 @@ import com.example.newCommuniryService01.Domain.PostDomain;
 import com.example.newCommuniryService01.Domain.PostUpdateDomain;
 import com.example.newCommuniryService01.Dto.*;
 import com.example.newCommuniryService01.Repository.CommentRepository;
-import com.example.newCommuniryService01.Repository.PostJpaInjectedRepository;
 import com.example.newCommuniryService01.Repository.PostRepository;
-import com.example.newCommuniryService01.Repository.TestRepository;
-import com.example.newCommuniryService01.Strategy.Policy.PostPolicy;
+import com.example.newCommuniryService01.Repository.UserRepository;
+import com.example.newCommuniryService01.Service.Strategy.Policy.PostPolicy;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PatchMapping;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 
 @Service
@@ -26,8 +27,9 @@ public class PostService {
     private List<PostPolicy> policyStrategies;
 
 
+
     @Autowired
-    TestRepository testRepository;
+    UserRepository userRepository;
 
 
 
@@ -63,39 +65,41 @@ public class PostService {
 
 
 
+    // @PreAuthorize() 용 커스텀 메서드
+    public String getPostUserEmail(Long postId){
 
+        Long postUserId = postRepository.findById(postId).getUserId();
+        String email = userRepository.findById(postUserId).getEmail();
 
+        System.out.println("서비스에서, 이메일: "+ email);
+        return email;
 
-
-
+    }
 
 
 
 
     //게시글 - 추가
     //부여할 조회권한별 분기 필요 (관리자에게만, 로그인에게만, 모두에게, +나에게만) => dto단에서 열거형으로 처리
-    public PostDto createPost(PostDto postDto, Long sessionUserId){
+    public PostDto createPost(PostDto postDto, Long sessionUserId, Authentication authentication){
 
-        /* (전략패턴 적용전 버전)
-        //세션 매치해서 가져온 userId 할당
-        postDto.setUserId(sessionUserId);
+        Long loginUserId = userRepository.findByEmail(authentication.getName()).getId();
+        String loginUserName = userRepository.findByEmail(authentication.getName()).getUserName();
 
-
-        PostDomain postDomain = postDto.toDomain();
-        return (postRepository.save(postDomain)).toDto();
-
-         */
+        System.out.println("서비스: loginUserId: "+loginUserId);
 
         PostDomain postDomain = new PostDomain(
                 postDto.getId(),
-                sessionUserId,
-                postDto.getAuthor(),
+                loginUserId,
+                loginUserName,
                 postDto.getTitle(),
                 postDto.getContent(),
                 null,
-                getStrategy(sessionUserId).fetchPostAuthorityData(postDto, sessionUserId) //전략구현체가 서비스에 포함되는 형태로 개선
-                //ㄴ> 변경하기: 유저 종류에 따른 자동할당 => 유저가 직접 선택하도록
+                getStrategy(loginUserId).fetchPostAuthorityData(postDto, loginUserId) //전략구현체가 서비스에 포함되는 형태로 개선
+                //ㄴ> 변경하기: 유저 종류에 따른 자동할당에서 => 유저가 직접 선택하도록
         );
+        System.out.println(sessionUserId);
+
 
         postRepository.save(postDomain);
 
@@ -144,7 +148,7 @@ public class PostService {
         }
 
 
-        System.out.println("전체조회: "+pfdList);
+        System.out.println("서비스에서 - 전체조회: "+pfdList);
 
         return new PostListDto(pfdList);
     }
@@ -154,7 +158,9 @@ public class PostService {
 
 
     //게시글 - 상세조회
-    public PostPageDto viewOnePost(Long postId, Long sessionUserId){
+    //@PreAuthorize("hasRole('ADMIN') or @postService.getPostUserEmail(#postId).equals(authentication.name)")
+    //@PreAuthorize("hasRole('ADMIN')")
+    public PostPageDto viewOnePost(Long postId, Long sessionUserId, Authentication authentication){
 
         /* (전략패턴 적용전 버전)
 
@@ -176,6 +182,10 @@ public class PostService {
         return getStrategy(sessionUserId).viewOnePost(postId, sessionUserId);
 
          */
+
+
+        System.out.println("상세조회, 인증객체.name: "+authentication.getName());
+        System.out.println("상세조회, PUE: "+getPostUserEmail(postId));
 
         //보완 여지: 권한과 관련된 요소들(전략 매칭, 권한 필터링)은 auth라인에서 처리하고 post라인에서 가져다 쓰도록 수정?
 
@@ -200,14 +210,17 @@ public class PostService {
             List<CommentDto> commentDtoList = new ArrayList<>();
 
             for(CommentDomain commentDomain : commentDomainList){
-                CommentDto commentDto = new CommentDto(
-                        commentDomain.getId(),
-                        commentDomain.getPostId(),
-                        commentDomain.getUserId(),
-                        commentDomain.getAuthor(),
-                        commentDomain.getContent()
-                );
-                commentDtoList.add(commentDto);
+                if(commentDomain.getPostId().equals(postId)){
+                    CommentDto commentDto = new CommentDto(
+                            commentDomain.getId(),
+                            commentDomain.getPostId(),
+                            commentDomain.getUserId(),
+                            commentDomain.getAuthor(),
+                            commentDomain.getContent()
+                    );
+                    commentDtoList.add(commentDto);
+                }
+
             }
 
 
@@ -218,6 +231,7 @@ public class PostService {
 
         }
 
+
         return null;
 
     }
@@ -225,8 +239,12 @@ public class PostService {
 
 
 
+
+
     //게시글 - 수정
-    public Boolean updatePost(PostDto postDto, Long postId, Long sessionUserId){
+    @PreAuthorize("hasRole('ADMIN') or @postService.getPostUserEmail(#postId) == authentication.name")
+    //-> post리포지토리 메서드로 옮기기?
+    public Boolean updatePost(PostDto postDto, Long postId, Long sessionUserId, Authentication authentication){
 
         /* 전략패턴 적용전 버전
         //접근 권한 필터링
@@ -247,7 +265,10 @@ public class PostService {
          */
 
 
-        //Jpa 적용 + '진정한 DIP' 보완 버전
+        System.out.println("수정, 세션인증객체 이메일: "+authentication.getName());
+        System.out.println("수정, 게시글 유저이메일: "+getPostUserEmail(postId));
+
+
         if(getStrategy(sessionUserId).checkUnauthorized(postId, sessionUserId, postDto)){
             return true;
         }
@@ -268,13 +289,6 @@ public class PostService {
 
         return false;
 
-
-        //PATCH화
-        /*
-        1) Dto객체(3상태) 겟 - 변경된 필드 파악
-        2) 리포에서 도메인 객테 겟 - 세터로 일부 필드 셋 후 리포 저장
-         */
-
     }
 
 
@@ -283,6 +297,7 @@ public class PostService {
 
 
     //게시글 - 삭제
+    @PreAuthorize("hasRole('ADMIN') or @postService.getPostUserEmail(#postId) == authentication.name")
     public Boolean deletePost(Long postId, Long sessionUserId){
 
         /* 전략패턴 적용 전 버전
@@ -310,16 +325,6 @@ public class PostService {
 
 
 
-
-
-
-
-
-    public void testCreatePost(){
-
-        testRepository.testCreatePost();
-
-    }
 
 
 

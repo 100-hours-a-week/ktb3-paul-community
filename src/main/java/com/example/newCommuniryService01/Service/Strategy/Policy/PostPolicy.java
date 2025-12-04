@@ -1,4 +1,4 @@
-package com.example.newCommuniryService01.Strategy.Policy;
+package com.example.newCommuniryService01.Service.Strategy.Policy;
 
 import com.example.newCommuniryService01.Domain.PostAuthority;
 import com.example.newCommuniryService01.Domain.UserMode;

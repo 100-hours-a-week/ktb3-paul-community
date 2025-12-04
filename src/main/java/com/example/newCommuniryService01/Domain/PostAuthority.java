@@ -4,6 +4,6 @@ public enum PostAuthority {
 
     NORMAL,
     ADMIN,
-    LOGOUT
+    BUSINESS
 
 }

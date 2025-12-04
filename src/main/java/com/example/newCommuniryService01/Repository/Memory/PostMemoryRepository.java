@@ -1,17 +1,13 @@
-package com.example.newCommuniryService01.Repository;
+package com.example.newCommuniryService01.Repository.Memory;
 
 import com.example.newCommuniryService01.Domain.PostDomain;
 import com.example.newCommuniryService01.Domain.PostUpdateDomain;
-import com.example.newCommuniryService01.Domain.UserDomain;
-import com.example.newCommuniryService01.Dto.CommentDto;
-import com.example.newCommuniryService01.Dto.PostDto;
-import com.example.newCommuniryService01.Dto.UserDto;
-import org.springframework.stereotype.Repository;
+import com.example.newCommuniryService01.Repository.PostRepository;
 
 import java.util.*;
 
 //@Repository
-public class PostMemoryRepository implements PostRepository{
+public class PostMemoryRepository implements PostRepository {
 
 
     private static Map<Long, PostDomain> dbMap = new HashMap<>();

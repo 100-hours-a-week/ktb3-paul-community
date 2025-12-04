@@ -1,23 +1,14 @@
-package com.example.newCommuniryService01.Strategy.Policy;
+package com.example.newCommuniryService01.Service.Strategy.Policy;
 
 import com.example.newCommuniryService01.Domain.PostAuthority;
-import com.example.newCommuniryService01.Domain.PostDomain;
 import com.example.newCommuniryService01.Domain.UserMode;
-import com.example.newCommuniryService01.Dto.CommentDto;
 import com.example.newCommuniryService01.Dto.PostDto;
 import com.example.newCommuniryService01.Dto.PostListDto;
-import com.example.newCommuniryService01.Dto.PostPageDto;
 import com.example.newCommuniryService01.Repository.CommentRepository;
 import com.example.newCommuniryService01.Repository.PostRepository;
 import com.example.newCommuniryService01.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import static com.example.newCommuniryService01.Domain.PostAuthority.ADMIN;
 
 
 @Component

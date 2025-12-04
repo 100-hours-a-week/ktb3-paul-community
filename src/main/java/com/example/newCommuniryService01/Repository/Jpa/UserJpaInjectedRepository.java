@@ -1,14 +1,14 @@
-package com.example.newCommuniryService01.Repository;
+package com.example.newCommuniryService01.Repository.Jpa;
 
-import com.example.newCommuniryService01.Domain.PostDomain;
 import com.example.newCommuniryService01.Domain.UserDomain;
+import com.example.newCommuniryService01.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public class UserJpaInjectedRepository implements UserRepository{
+public class UserJpaInjectedRepository implements UserRepository {
 
 
     private UserJpaRepository userJpaRepository;

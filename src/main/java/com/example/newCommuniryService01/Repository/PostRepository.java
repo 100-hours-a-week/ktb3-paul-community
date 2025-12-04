@@ -6,6 +6,7 @@ import com.example.newCommuniryService01.Dto.CommentDto;
 import com.example.newCommuniryService01.Dto.PostDto;
 import com.example.newCommuniryService01.Dto.UserDto;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.net.InterfaceAddress;
 import java.util.List;

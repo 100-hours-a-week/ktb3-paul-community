@@ -4,5 +4,6 @@ public enum UserMode {
 
     NORMAL,
     ADMIN,
-    LOGOUT
+    BUSINESS
+
 }

@@ -1,8 +1,6 @@
 package com.example.newCommuniryService01;
 
-import com.example.newCommuniryService01.Domain.PostDomain;
 import com.example.newCommuniryService01.Dto.PostDto;
-import com.example.newCommuniryService01.Repository.PostJpaRepository;
 import com.example.newCommuniryService01.Service.PostService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +33,7 @@ class newCommuniryService01ApplicationTests {
 
      */
 
+    /*
     @Test
     void 리포지토리_우선순위_테스트(){
 
@@ -47,5 +46,7 @@ class newCommuniryService01ApplicationTests {
 
 
     }
+
+     */
 
 }

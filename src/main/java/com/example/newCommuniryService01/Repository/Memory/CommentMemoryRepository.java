@@ -1,12 +1,9 @@
-package com.example.newCommuniryService01.Repository;
+package com.example.newCommuniryService01.Repository.Memory;
 
 import com.example.newCommuniryService01.Domain.CommentDomain;
 import com.example.newCommuniryService01.Domain.CommentUpdateDomain;
-import com.example.newCommuniryService01.Domain.PostDomain;
 import com.example.newCommuniryService01.Dto.CommentDto;
-import com.example.newCommuniryService01.Dto.PostDto;
-import com.example.newCommuniryService01.Dto.CommentDto;
-import org.springframework.stereotype.Repository;
+import com.example.newCommuniryService01.Repository.CommentRepository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 //@Repository
-public class CommentMemoryRepository implements CommentRepository{
+public class CommentMemoryRepository implements CommentRepository {
 
 
     private static Map<Long, CommentDomain> dbMap = new HashMap<>();
