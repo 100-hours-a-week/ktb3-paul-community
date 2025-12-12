@@ -129,7 +129,7 @@ CRUD 권한 정책에 따라 서비스 로직이 복잡해지는 문제를 해�
 
 - **DIP 충족**: Service → Policy(추상화)에만 의존
 - **OCP 충족**: 정책 추가/수정 시 Service 수정 없음
-- **응집도 증가**: 각 클래스는 한 역할만 담당
+- **결합도 감소 & 응집도 증가**: 각 클래스는 한 역할만 담당
 - **유지보수성·테스트 용이성 상승**
 
 ## 3. DB 설계 및 JPA 적용
@@ -151,7 +151,7 @@ JPARepository를 사용하는 방식과 추상화 Repository를 함께 사용하
 
 ### 인증 구현
 
-- Form Login 방식의 인증 흐름 전체 이해
+- 스프링 시큐리티 인증 흐름 내부 구조 이해
     
     (Authentication Filter → Authentication Manager → Provider → UserDetailsService)
     
@@ -163,21 +163,6 @@ JPARepository를 사용하는 방식과 추상화 Repository를 함께 사용하
 
 - URL 기반 인가: `antMatchers`, `hasRole`, `authenticated()`
 - 메서드 기반 인가: `@PreAuthorize`
-
-
-### 오류 해결
-
-- **로그인 성공 후에도 계속 미인증 상태**
-    - 원인: fetch 요청에서 `credentials: 'include'` 누락
-    - 해결: 프론트 엔드에서 세션 쿠키 포함하도록 수정
-- **로그인 실패처럼 보였지만 원인은 인가 실패**
-    - 원인: 로그인 후 이동하는 기본 URL이 인가 거부되어 다시 `/auth`로 리다이렉트
-    - 해결: 로그인 성공 redirect 수정 + 권한 오타 수정
-- **PATCH 요청 미지원 오류**
-    - 원인: 인증 실패로 인해 `/auth`로 PATCH 요청이 날아감
-    - 해결: credentials 누락 이슈 해결 후 정상 작동
-- **비로그인 요청 인가 허용**
-    - 원인:
 
 
 
