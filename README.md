@@ -76,7 +76,7 @@ src
         │   └── Memory           
         │
         └── Service              
-				    └── Strategy         
+			└── Strategy         
 ```
 
 ## API
@@ -106,12 +106,6 @@ src
 - **Controller / DTO**: 요청 파싱, 검증, 전달
 - **Service / Domain**: 비즈니스 로직 수행
 - **Repository**: 영속성 접근만 담당
-
-특히 Repository 계층에 비즈니스 로직이 섞이지 않도록 **관심사 분리 원칙**을 엄격히 적용했다.
-
-- **리포지토리에서 필터링 로직을 넣을 것인가?**
-    
-    → 단기적으로 편해 보이지만 MVC 분리 원칙을 깨기 때문에 Service 계층에서 책임을 수행하도록 정리.
     
 
 ## 2. SOLID 적용을 통한 리팩터링 (전략 패턴 기반)
