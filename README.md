@@ -10,7 +10,7 @@ BookHub는 책과 인사이트, 삶에 대한 여러 이야기를 공유하며 �
 
 **언어 / 프레임워크**
 
-- Java 17
+- Java 21
 - SpringBoot 3.5.6
 - JPA(Spring Data JPA)
 - Spring Security
